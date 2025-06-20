@@ -1,0 +1,126 @@
+&raquo panah >>
+&rsaquo panah >
+&laquo panah <<
+
+dd($variable); = debug untuk cek apakah sudah dapat
+
+php artisan make:component nama class dan view untuk membuat file component
+php artisan make:component nama view --view ini membuat di dalam components aja
+php artisan tinker memasukkan data ke database secara manual
+lalu cari model yang akan diisi data misal App\Models\Post::create(['title'=>'Judul Artikel 1','author'=>'Erie ','slug'=>'judul-artikel-2','body'=>'lorem']);
+
+contoh pembuatan data
+php artisan tinker (yang ada tanda // jangan di masukkan)
+// Artikel 1
+App\Models\Post::create([
+    'title' => 'Membangun Aplikasi Laravel', 
+    'author' => 'John Doe',
+    'slug' => 'membangun-aplikasi-laravel',
+    'body' => 'Laravel adalah framework PHP yang elegan dan ekspresif. Framework ini menyediakan struktur dan titik awal untuk membuat aplikasi web Anda. Laravel berusaha untuk membuat proses pengembangan menyenangkan bagi developer tanpa mengorbankan fungsionalitas aplikasi.'
+]);
+
+// Artikel 2
+App\Models\Post::create([
+    'title' => 'Tips Coding PHP', 
+    'author' => 'Jane Smith',
+    'slug' => 'tips-coding-php',
+    'body' => 'PHP adalah bahasa pemrograman yang powerful untuk pengembangan web. Artikel ini akan membahas beberapa tips dan trik dalam menulis kode PHP yang bersih, efisien, dan mudah dimaintain.'
+]);
+
+// Artikel 3
+App\Models\Post::create([
+    'title' => 'Belajar Database MySQL', 
+    'author' => 'David Wilson',
+    'slug' => 'belajar-database-mysql',
+    'body' => 'MySQL adalah sistem manajemen database yang populer digunakan dengan PHP. Mari pelajari cara mengoptimalkan query, membuat struktur tabel yang baik, dan best practices dalam penggunaan MySQL.'
+]);
+
+// Artikel 4
+App\Models\Post::create([
+    'title' => 'Frontend Development dengan TailwindCSS', 
+    'author' => 'Sarah Johnson',
+    'slug' => 'frontend-development-tailwindcss',
+    'body' => 'TailwindCSS memberikan pendekatan utility-first dalam styling website. Framework CSS ini memungkinkan kita membuat desain yang menarik tanpa meninggalkan HTML kita.'
+]);
+
+// Artikel 5
+App\Models\Post::create([
+    'title' => 'Rest API dengan Laravel', 
+    'author' => 'Mike Brown',
+    'slug' => 'rest-api-dengan-laravel',
+    'body' => 'Membuat REST API dengan Laravel sangat mudah dan straightforward. Laravel menyediakan berbagai tools dan fitur yang membuat pengembangan API menjadi lebih efisien.'
+]);
+
+jika ingin membuat data dummy buat
+php artisan tinker
+App\Models\User::factory()->create();
+dan jika ingin membuat data dummya nya banyak
+App\Models\User::factory(10)->create(); ini akan membuat 10 data
+dan jika salah satu data ingin null misal email_verified_at = null maka
+App\Models\User::factory(3)->unverified()->create(); dan ini membuat 3 data yang emailnya tidak 
+verified
+
+cara membuat migration table
+php artisan make:migration nama table
+
+jika ingin membuat factory
+php artisan make:factory nama factorynya dan penamaannya itu misal PostFactory
+jika ingin membuat data dummya yang sudah terhubung satu sama lain misal 
+table users terhubung dengan table posts name dengan author_id
+maka commandnya adalah
+php artisan tinker
+App\Models\Post::factory(100)->recycle(User::factory(5)->create())->create();
+maka akan di buatkan 100 data post dengan 5 data user secara random menggunakan recycle
+
+jika ingin customisasi ingin membuat berapa datanya
+
+\App\Models\Post::factory(100)->recycle([\App\Models\User::factory(5)->create(), \App\Models\Category::factory(10)->create()])->create();
+
+ini artinya membuat post 100 user 5 dan category 10
+
+jika ingin membuat model dan juga migratioinnya
+php artisan make:model nama model -mf ini artinya membuat model dan migration
+
+
+recycle 3 data
+App\Models\Post::factory(100)->recycle([Category::fa
+ctory(3)->create(),User::factory(5)->create()])->creat
+e()
+
+
+untuk membuat database seeder
+php artisan make:seeder NamaSeeder jika enter memasukkkan nama 
+
+
+
+ php artisan migrate:fresh --seed
+ untuk menjalan kan migrate dan membuat data dummya yang berada di database
+ menggunakan --seed
+
+  php artisan migrate:fresh --seed
+  
+  untuk membuat semua data dummy namun tetap menyimpan data yang dibuat sendiri
+
+ $alfin =User::create([
+            'name' => 'Alfin F',
+            'username' => 'Alfin',
+            'email' => 'alfinfaherza@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ]);
+
+  Post::factory(100)->recycle([
+            Category::factory(3)->create(),
+            $alfin,
+            User::factory(5)->create(),
+        ])->create();
+
+        composer require barryvdh/laravel-debugbar --dev
+
+        ini untuk cek berapa kali kita melakukan query namun hanya
+        gunakan ini ketika di development jangan pas di publish
+
+        untuk membuat controller yang isinya ada index,create,update,show,destroy secara otomatis
+    
+        php artisan make:controller ProductController -r -m=Product
